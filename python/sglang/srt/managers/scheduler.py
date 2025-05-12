@@ -457,6 +457,7 @@ class Scheduler(
 
         self.model_config = ModelConfig(
             server_args.model_path,
+            server_args.hf_config_path,
             trust_remote_code=server_args.trust_remote_code,
             revision=server_args.revision,
             context_length=server_args.context_length,

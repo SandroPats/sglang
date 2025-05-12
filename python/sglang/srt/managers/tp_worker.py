@@ -71,6 +71,7 @@ class TpModelWorker:
                 if not is_draft_worker
                 else server_args.speculative_draft_model_path
             ),
+            hf_config_path=server_args.hf_config_path,
             trust_remote_code=server_args.trust_remote_code,
             revision=server_args.revision,
             context_length=server_args.context_length,
