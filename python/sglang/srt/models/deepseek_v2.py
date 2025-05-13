@@ -1823,7 +1823,7 @@ class DeepseekV2ForCausalLM(nn.Module):
                         continue
 
                     if fuse_qkv_a_proj and (
-                        ("q_a_proj" in name or "kv_a_proj_with_mqa" in name) and 'type' not in name
+                        ("q_a_proj" in name or "kv_a_proj_with_mqa" in name)
                     ):
                         cached_a_proj[name] = loaded_weight
                         q_a_proj_name = (
@@ -1845,9 +1845,12 @@ class DeepseekV2ForCausalLM(nn.Module):
 
                             q_a_proj_weight = cached_a_proj[q_a_proj_name]
                             kv_a_proj_weight = cached_a_proj[kv_a_proj_name]
-                            fused_weight = torch.cat(
-                                [q_a_proj_weight, kv_a_proj_weight], dim=0
-                            )
+                            if "type" in name:
+                                fused_weight = kv_a_proj_weight
+                            else:
+                                fused_weight = torch.cat(
+                                    [q_a_proj_weight, kv_a_proj_weight], dim=0
+                                )
 
                             param_name = name.replace(
                                 "q_a_proj", "fused_qkv_a_proj_with_mqa"
